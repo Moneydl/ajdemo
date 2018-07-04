@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <canvas id="myChart" style ="width: 40px !important; height: 10px !important;"></canvas>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flexio-sdk-js@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:8887/data.csv",
+                dataType: "text",
+                success: function (data) { processData(data); }
+            });
+        });
+
+        function processData(csvData) {
+            var rowData = csvData.split("\n");
+
+            var columnLength = rowData[0].split(",").length;
+            var columnsHeadersData = rowData[0].split(",");
+
+            var sensorType = [];
+            var sensorValue = [];
+            var timeStamp = [];
+
+            //console.log(rowData[1].split(","));
+
+            for (var i = 1; i < rowData.length; i++) {
+                //console.log(rowData[i]);
+                var rowDataIndividual = rowData[i].split(",");
+
+                sensorType.push( rowDataIndividual[5]);
+                sensorValue.push(rowDataIndividual[6]);
+                timeStamp.push( rowDataIndividual[7]);
+            }
+                 var dataJsonHumidity = {
+                acc:[]
+            };
+            
+            var dataJson = [];
+            for (var j = 0; j < 10; j++) {
+                var temp = {}
+                var v=sensorType[j]
+                temp = {
+                    
+                    
+    
+                };
+                if (v == "T")
+                    dataJson.push({
+                        
+                        x:Math.floor( Math.random( )*10),
+                    y: sensorValue[j],
+                    r:Math.floor( Math.random( )*10)
+                    }
+                    );
+               
+            }
+            console.log(dataJson[2]);
+            var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+  type: 'bubble',
+  data: {
+    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    datasets: [
+      {
+         label: 'Gaze Map Month 1',
+         data: dataJson,
+         backgroundColor:"#FF6384",
+         hoverBackgroundColor: "#FF6384",
+      }
+    ]
+  },
+  options: {
+     scales: {
+       yAxes: [{
+         ticks: {
+           beginAtZero:true,
+            min: -30,
+            max: 30  
+           }
+         }],
+       }
+     }
+   });
+        }
+        
+            //console.log(sensorType);
+        
+            //console.log(sensorValue);
+            //console.log(timeStamp);
+            // var dataJsonHumidity = {
+            //     acc:[]
+            // };
+            // var dataJson = {
+            //     accounting: []
+            // };
+            // for (var j = 0; j < sensorValue.length; j++) {
+            //     var temp = {}
+                
+            //     temp = {
+            //         "sensorType": sensorType[j],
+            //         "sensorValue": sensorValue[j],
+            //         "timeStamp": timeStamp[j]
+            //     };
+            //     if (temp.sensorType == "T")
+            //         dataJson.accounting.push(temp);
+               
+            // }
+            // var c = 0;
+            // for (var j = 0; j <= sensorValue.length; j++) {
+            //     var temp = {}
+
+            //     temp = {
+            //         "sensorType": sensorType[j],
+            //         "sensorValue": sensorValue[j],
+            //         "timeStamp": dataJson.accounting[c].timeStamp
+            //     };
+                
+            //     if (temp.sensorType == "H" &&c<3508) {
+            //         dataJsonHumidity.acc.push(temp);
+            //         //console.log(temp);
+            //         c++;
+            //     }
+                
+            // }
+            // console.log(dataJson.accounting[2]);
+
+            // console.log(dataJsonHumidity.acc[2]);
+
+
+            // var count = 0;
+            // console.log(count);
+            // setInterval(function () {
+            //     //var dynamicNumber = Math.floor(Math.random() * 100);
+            //     var displayDataArray = [];
+            //     var displayTimeArray = [];
+            //     var displayDataArrayHumidity = [];
+            //     var range = count + 65;
+            //     var counter = 0;
+            //     for (var i = count; i < range; i++) {
+            //         displayDataArray[counter] = dataJson.accounting[i].sensorValue;
+            //         displayTimeArray[counter] = dataJson.accounting[i].timeStamp;
+                    
+            //         //console.log(dataJson.accounting[i].sensorValue);
+            //         displayDataArrayHumidity[counter] = dataJsonHumidity.acc[i].sensorValue;
+            //         counter++;
+            //     }
+            //     count = count + 1;
+            //     console.log(count);
+            //     console.log(displayTimeArray);
+            //    //console.log(displayDataArrayHumidity);
+
+        //         var ctx = document.getElementById("myChart");
+        //         var myChart = new Chart(ctx, {
+        //             type: 'line',
+        //             data: {
+        //                 labels: displayTimeArray,
+        //                 datasets: [{
+        //                     label: 'temperature',
+        //                     data: displayDataArray,
+        //                     backgroundColor: [
+        //                         'rgba(0, 0, 0, 0)'
+                                
+        //                     ],
+        //                     borderColor: [
+        //                         'rgba(255,99,132,1)',
+                                
+                                
+        //                     ],
+        //                     borderWidth: 1
+        //                 },
+        //                     {
+        //                         label: 'Humidity',
+        //                         data: displayDataArrayHumidity,
+        //                         backgroundColor: [
+                                    
+        //                            'rgba(0, 0, 0, 0)'
+                                   
+        //                         ],
+        //                         borderColor: [
+                                    
+        //                             'rgba(255, 159, 64, 1)'
+        //                         ],
+        //                         borderWidth: 1
+        //                     }]
+        //             },
+        //             options: {
+        //                 scales: {
+        //                     yAxes: [{
+        //                         ticks: {
+        //                             beginAtZero: true
+        //                         }
+        //                     }]
+        //                 }
+        //             }
+        //         });
+
+        //     }, 10000);
+
+        // }
+    </script>
+
+</body>
+</html>
